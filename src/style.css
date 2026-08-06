@@ -1,0 +1,310 @@
+/* ==========================================================================
+   AI RAILWAY TRAFFIC CONTROL SYSTEM - FUTURISTIC NOC COMMAND CENTER STYLES
+   Smart India Hackathon 2026 Enterprise Operations Center
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+    /* Color Palette */
+    --bg-dark: #081120;
+    --bg-card: #111827;
+    --cyan-accent: #06B6D4;
+    --cyan-glow: rgba(6, 182, 212, 0.4);
+    --blue-accent: #3B82F6;
+    --emerald-success: #22C55E;
+    --amber-warning: #FACC15;
+    --red-critical: #EF4444;
+    
+    --text-white: #FFFFFF;
+    --text-muted: #94A3B8;
+    --text-dim: #64748B;
+    --border-dark: #1F2937;
+    --border-cyan: rgba(6, 182, 212, 0.3);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    transition-property: color, background-color, border-color, box-shadow, transform, opacity;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+}
+
+h1, h2, h3, h4, h5, h6, .font-tech, .font-mono-tech {
+    font-family: 'Space Grotesk', sans-serif;
+    letter-spacing: -0.02em;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-white);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    background-image: 
+        radial-gradient(circle at 15% 15%, rgba(6, 182, 212, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.06) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(34, 197, 94, 0.03) 0%, transparent 60%),
+        linear-gradient(to right, rgba(31, 41, 55, 0.15) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(31, 41, 55, 0.15) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(8, 17, 32, 0.9);
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(31, 41, 55, 0.9);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--cyan-accent);
+}
+
+/* Glassmorphism Classes */
+.glass {
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-dark);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-card {
+    background: rgba(17, 24, 39, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(31, 41, 55, 0.8);
+    border-radius: 1.25rem;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+.glass-card:hover {
+    border-color: rgba(6, 182, 212, 0.4);
+    box-shadow: 0 12px 35px -5px rgba(6, 182, 212, 0.18);
+    transform: translateY(-2px);
+}
+
+.glass-panel {
+    background: linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(8, 17, 32, 0.95) 100%);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(6, 182, 212, 0.25);
+}
+
+/* Active Sidebar Navigation Item */
+.nav-item {
+    position: relative;
+    border-left: 3px solid transparent;
+}
+.nav-item:hover {
+    background-color: rgba(31, 41, 55, 0.6);
+    color: #ffffff;
+}
+.nav-item.active {
+    background: linear-gradient(90deg, rgba(6, 182, 212, 0.18) 0%, rgba(6, 182, 212, 0.02) 100%);
+    color: #FFFFFF;
+    border-left: 3px solid var(--cyan-accent);
+    box-shadow: 0 0 18px rgba(6, 182, 212, 0.25);
+}
+
+.nav-item.active i {
+    color: var(--cyan-accent);
+    filter: drop-shadow(0 0 8px rgba(6, 182, 212, 0.8));
+}
+
+/* Status Lights & Indicators */
+.status-dot {
+    position: relative;
+}
+.status-dot::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: inherit;
+    opacity: 0.6;
+    animation: pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+    0% { transform: scale(1); opacity: 0.8; }
+    70% { transform: scale(2.2); opacity: 0; }
+    100% { transform: scale(2.2); opacity: 0; }
+}
+
+.pulse-red {
+    animation: pulseRed 1.5s infinite;
+}
+@keyframes pulseRed {
+    0%, 100% { opacity: 1; filter: drop-shadow(0 0 8px #EF4444); }
+    50% { opacity: 0.45; filter: drop-shadow(0 0 2px #EF4444); }
+}
+
+.pulse-cyan {
+    animation: pulseCyan 2s infinite;
+}
+@keyframes pulseCyan {
+    0%, 100% { opacity: 1; filter: drop-shadow(0 0 8px #06B6D4); }
+    50% { opacity: 0.5; filter: drop-shadow(0 0 2px #06B6D4); }
+}
+
+/* Map Track & SVG Animations */
+.track {
+    stroke: #1e293b;
+    stroke-width: 16;
+    stroke-linecap: round;
+}
+
+.track-inner {
+    stroke: #06B6D4;
+    stroke-width: 3;
+    stroke-dasharray: 8 6;
+    animation: dashMove 20s linear infinite;
+}
+
+@keyframes dashMove {
+    to { stroke-dashoffset: -1000; }
+}
+
+.train-node {
+    filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.85));
+}
+
+/* Radar Sweep Effect */
+.radar-sweep {
+    position: relative;
+    overflow: hidden;
+}
+.radar-sweep::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(from 0deg, rgba(6, 182, 212, 0.15) 0deg, transparent 60deg, transparent 360deg);
+    transform: translate(-50%, -50%);
+    animation: radarRotate 6s linear infinite;
+    pointer-events: none;
+    border-radius: 50%;
+}
+@keyframes radarRotate {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Form Input Field Customization */
+input, select, textarea {
+    background-color: rgba(15, 23, 42, 0.95) !important;
+    border: 1px solid rgba(51, 65, 85, 0.8) !important;
+    color: #FFFFFF !important;
+    transition: all 0.2s ease !important;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: var(--cyan-accent) !important;
+    box-shadow: 0 0 18px rgba(6, 182, 212, 0.35) !important;
+    outline: none !important;
+}
+
+select option {
+    background-color: #0f172a;
+    color: #ffffff;
+}
+
+/* Glowing Buttons */
+.btn-cyan {
+    background: linear-gradient(135deg, #06B6D4 0%, #2563EB 100%);
+    color: #FFFFFF;
+    box-shadow: 0 4px 20px rgba(6, 182, 212, 0.35);
+    font-weight: 600;
+}
+.btn-cyan:hover {
+    box-shadow: 0 6px 25px rgba(6, 182, 212, 0.55);
+    transform: translateY(-1px);
+}
+.btn-cyan:active {
+    transform: translateY(1px);
+}
+
+/* Result Card Reveal Animation */
+.animate-reveal {
+    animation: cardReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes cardReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Toast Notifications System */
+#toast-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 12px;
+    pointer-events: none;
+}
+
+.toast-item {
+    pointer-events: auto;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(6, 182, 212, 0.4);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(6, 182, 212, 0.25);
+    border-radius: 1rem;
+    padding: 1rem 1.25rem;
+    min-width: 320px;
+    max-width: 420px;
+    animation: toastIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes toastIn {
+    from { opacity: 0; transform: translateX(60px) scale(0.9); }
+    to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+/* Loading Screen Animation Elements */
+#loading-messages div {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.4s ease;
+}
+
+/* Hero Section Animated Grid */
+.cyber-grid {
+    background-size: 50px 50px;
+    background-image:
+        linear-gradient(to right, rgba(6, 182, 212, 0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(6, 182, 212, 0.06) 1px, transparent 1px);
+    animation: gridMove 30s linear infinite;
+}
+
+@keyframes gridMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 50px 50px; }
+}
+
+/* Counter Animation Support */
+.counter-val {
+    display: inline-block;
+    transition: all 0.5s ease;
+}

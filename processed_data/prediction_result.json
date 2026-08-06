@@ -1,0 +1,23 @@
+{
+    "train_type": "Express",
+    "current_station": "S1",
+    "next_station": "S2",
+    "speed": 95,
+    "current_delay": 9,
+    "weather": "Sunny",
+    "signal_status": "Yellow",
+    "track_status": "Free",
+    "platform_available": "No",
+    "train_priority": 2,
+    "day_of_week": "Monday",
+    "hour_of_day": 10,
+    "congestion_level": "High",
+    "predicted_delay": 21.15,
+    "severity": "MODERATE DELAY",
+    "recommendations": [
+        "Notify next station.",
+        "Passenger announcement required.",
+        "Increase signal priority.",
+        "Prepare platform staff."
+    ]
+}

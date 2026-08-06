@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Railway Traffic Control • Section Controller Access</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Master Custom Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#081120] text-white overflow-hidden font-sans">
+    <div class="flex h-screen w-screen">
+        
+        <!-- LEFT HERO: DIGITAL RAILWAY NETWORK GRAPHIC & BRANDING -->
+        <div class="hidden lg:flex w-7/12 bg-gradient-to-br from-[#081120] via-[#0b1b36] to-[#040914] relative overflow-hidden cyber-grid border-r border-slate-800/80">
+            <!-- Background Radial Glows -->
+            <div class="absolute -top-32 -left-32 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <!-- Animated Cyber Railway Network SVG Graphic -->
+            <div class="absolute inset-0 flex items-center justify-center opacity-40 pointer-events-none">
+                <svg width="800" height="800" viewBox="0 0 800 800" fill="none" class="w-full h-full p-12">
+                    <!-- Concentric Tech Radar Circles -->
+                    <circle cx="400" cy="400" r="340" stroke="#06B6D4" stroke-width="1" stroke-dasharray="8 8" opacity="0.4" />
+                    <circle cx="400" cy="400" r="260" stroke="#3B82F6" stroke-width="1.5" opacity="0.3" />
+                    <circle cx="400" cy="400" r="180" stroke="#06B6D4" stroke-width="1" stroke-dasharray="4 4" opacity="0.5" />
+                    
+                    <!-- Network Tracks (Nodes and Paths) -->
+                    <path d="M 100,400 Q 250,200 400,400 T 700,400" stroke="#06B6D4" stroke-width="3" fill="none" opacity="0.8" />
+                    <path d="M 150,250 Q 400,550 650,250" stroke="#3B82F6" stroke-width="2" stroke-dasharray="6 6" fill="none" opacity="0.7" />
+                    <path d="M 200,550 C 350,300 450,500 600,200" stroke="#22C55E" stroke-width="2" fill="none" opacity="0.6" />
+
+                    <!-- Glowing Stations / Nodes -->
+                    <g>
+                        <circle cx="250" cy="300" r="8" fill="#06B6D4" class="status-dot"/>
+                        <text x="265" y="305" fill="#94A3B8" font-size="12" font-family="Space Grotesk">STATION A-1</text>
+                    </g>
+                    <g>
+                        <circle cx="400" cy="400" r="10" fill="#22C55E" class="status-dot"/>
+                        <text x="415" y="405" fill="#FFFFFF" font-size="13" font-weight="bold" font-family="Space Grotesk">CENTRAL JUNCTION (DELHI)</text>
+                    </g>
+                    <g>
+                        <circle cx="550" cy="320" r="8" fill="#FACC15" class="status-dot"/>
+                        <text x="565" y="325" fill="#94A3B8" font-size="12" font-family="Space Grotesk">SIGNAL ZONE S-3</text>
+                    </g>
+                    
+                    <!-- Moving AI Data Pulse Dots -->
+                    <circle cx="400" cy="400" r="6" fill="#06B6D4">
+                        <animateMotion path="M 100,400 Q 250,200 400,400 T 700,400" dur="8s" repeatCount="indefinite" />
+                    </circle>
+                    <circle cx="400" cy="400" r="5" fill="#22C55E">
+                        <animateMotion path="M 150,250 Q 400,550 650,250" dur="11s" repeatCount="indefinite" />
+                    </circle>
+                </svg>
+            </div>
+            
+            <!-- Hero Content -->
+            <div class="relative z-10 p-16 flex flex-col justify-between h-full w-full">
+                <!-- Header Emblem -->
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-cyan-500/30 border border-cyan-300/30">
+                        <i class="fa-solid fa-train-subway text-2xl text-white"></i>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold tracking-tight font-tech text-white flex items-center gap-2">
+                            SMART RAIL <span class="text-xs px-2.5 py-0.5 bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 rounded-full font-mono">v2.4 AI PRO</span>
+                        </div>
+                        <div class="text-xs text-slate-400 font-medium tracking-wide">INTELLIGENT TRAFFIC CONTROL & PREDICTION SYSTEM</div>
+                    </div>
+                </div>
+                
+                <!-- Main Center Titles -->
+                <div class="max-w-2xl">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/90 border border-cyan-500/30 text-cyan-400 text-xs font-semibold uppercase tracking-wider mb-6 shadow-md">
+                        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                        AI-POWERED PRECISE TRAFFIC MANAGEMENT
+                    </div>
+                    
+                    <h1 class="text-5xl font-bold tracking-tight text-white leading-tight mb-6 font-tech">
+                        AI Railway Traffic <br>
+                        <span class="bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-300 bg-clip-text text-transparent">Control System</span>
+                    </h1>
+                    
+                    <p class="text-lg text-slate-300 mb-8 font-light leading-relaxed">
+                        Predictive Delay Intelligence & Automatic Conflict Mitigation powered by Deep Learning (LSTM Model).
+                    </p>
+                </div>
+                
+                <!-- Bottom Government of India Style Branding -->
+                <div class="pt-6 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-full bg-slate-800/90 border border-slate-700 flex items-center justify-center text-slate-300 font-bold text-base shadow-sm">🏛️</div>
+                        <div>
+                            <div class="font-semibold text-slate-200">RAILWAY CONTROL CENTRE</div>
+                            <div class="text-[11px] text-slate-400">Ministry of Railways • Government of India</div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[11px] font-mono">NORTHERN DIVISION (DELHI HQ)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- RIGHT SIDE: GLASS LOGIN CARD -->
+        <div class="flex-1 flex items-center justify-center p-6 md:p-12 relative overflow-y-auto">
+            <div class="w-full max-w-md glass-panel p-8 md:p-10 rounded-3xl relative z-10 shadow-2xl border border-cyan-500/30">
+                <!-- Header -->
+                <div class="text-center mb-6">
+                    <div class="mx-auto w-16 h-16 bg-gradient-to-br from-cyan-500/20 to-blue-600/20 border border-cyan-400/30 rounded-2xl flex items-center justify-center text-cyan-400 text-3xl mb-4 shadow-lg shadow-cyan-500/15">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold font-tech text-white tracking-tight">Operations Login</h2>
+                    <p class="text-xs text-slate-400 mt-1">Section Controller & Loco Pilot Access</p>
+                </div>
+                
+                <!-- Login Form (Preserving ID login-form, username, password) -->
+                <form id="login-form">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">Username</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400"><i class="fa-solid fa-user text-sm"></i></span>
+                                <input type="text" id="username" 
+                                       class="w-full bg-slate-900/90 border border-slate-700/80 focus:border-cyan-400 rounded-xl pl-11 pr-4 py-3.5 outline-none text-white text-base font-medium placeholder-slate-500"
+                                       placeholder="admin" required autocomplete="username">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">Password</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400"><i class="fa-solid fa-lock text-sm"></i></span>
+                                <input type="password" id="password" 
+                                       class="w-full bg-slate-900/90 border border-slate-700/80 focus:border-cyan-400 rounded-xl pl-11 pr-4 py-3.5 outline-none text-white text-base font-medium placeholder-slate-500"
+                                       placeholder="••••••••" required autocomplete="current-password">
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between text-xs text-slate-300">
+                            <label class="flex items-center gap-2 cursor-pointer hover:text-white">
+                                <input type="checkbox" checked class="w-4 h-4 accent-cyan-500 rounded border-slate-700">
+                                <span>Remember session</span>
+                            </label>
+                            <a href="#" class="text-cyan-400 hover:underline">Forgot credentials?</a>
+                        </div>
+                        
+                        <button type="submit"
+                                class="w-full py-4 mt-2 bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold rounded-xl text-base tracking-wider shadow-lg shadow-cyan-500/25 transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2">
+                            <span>INITIALIZE CONTROL SYSTEM</span>
+                            <i class="fa-solid fa-right-to-bracket"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- SSO BUTTONS (Google / Microsoft) -->
+                <div class="mt-5 space-y-2">
+                    <div class="relative flex py-2 items-center">
+                        <div class="flex-grow border-t border-slate-800"></div>
+                        <span class="flex-shrink mx-3 text-slate-500 text-[10px] uppercase font-mono">Or Continue With</span>
+                        <div class="flex-grow border-t border-slate-800"></div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-2.5">
+                        <button type="button" onclick="triggerSSOMessage('Google')" class="py-2.5 px-3 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-600 text-slate-200 text-xs font-semibold flex items-center justify-center gap-2 transition-all">
+                            <i class="fa-brands fa-google text-red-400"></i>
+                            <span>Google</span>
+                        </button>
+                        <button type="button" onclick="triggerSSOMessage('Microsoft')" class="py-2.5 px-3 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-600 text-slate-200 text-xs font-semibold flex items-center justify-center gap-2 transition-all">
+                            <i class="fa-brands fa-microsoft text-blue-400"></i>
+                            <span>Microsoft</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CREATE ACCOUNT LINK -->
+                <div class="mt-6 text-center text-xs text-slate-400">
+                    Don't have an account? 
+                    <a href="register.html" class="text-cyan-400 font-bold hover:underline ml-1">Create Account</a>
+                </div>
+                
+                <!-- Demo Credentials Display -->
+                <div class="mt-6 pt-5 border-t border-slate-800/80 text-center">
+                    <div class="text-[11px] uppercase tracking-widest text-slate-400 mb-2 font-semibold">Demo Credentials</div>
+                    <div class="inline-flex items-center gap-4 bg-slate-900/90 border border-slate-800 px-4 py-2 rounded-xl text-xs shadow-inner">
+                        <div><span class="text-slate-400">Username:</span> <span class="font-mono text-cyan-400 font-bold ml-1">admin</span></div>
+                        <div class="w-px h-4 bg-slate-800"></div>
+                        <div><span class="text-slate-400">Password:</span> <span class="font-mono text-cyan-400 font-bold ml-1">admin123</span></div>
+                    </div>
+                </div>
+                
+                <!-- Error Message Alert Container -->
+                <div id="error-msg" class="hidden mt-4 p-3.5 rounded-xl bg-red-500/10 border border-red-500/40 text-red-400 text-center text-xs font-semibold flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <span>Invalid Username or Password</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- REDESIGNED FUTURISTIC LOADING SCREEN OVERLAY -->
+    <div id="loading-screen" class="hidden fixed inset-0 bg-[#081120] z-[10000] flex items-center justify-center cyber-grid">
+        <div class="max-w-lg w-full glass-panel p-10 rounded-3xl text-center shadow-2xl border border-cyan-500/30">
+            <!-- Pulsing AI Orb Spinner -->
+            <div class="relative w-24 h-24 mx-auto mb-8 flex items-center justify-center">
+                <div class="absolute inset-0 rounded-full border-4 border-cyan-500/20 border-t-cyan-400 animate-spin"></div>
+                <div class="absolute inset-2 rounded-full border-4 border-blue-500/20 border-b-blue-400 animate-spin" style="animation-direction: reverse; animation-duration: 1.5s;"></div>
+                <div class="w-12 h-12 bg-cyan-500/10 rounded-full flex items-center justify-center text-cyan-400 text-xl shadow-lg shadow-cyan-500/40 animate-pulse">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+            </div>
+            
+            <h3 class="text-2xl font-bold font-tech text-white mb-2 tracking-tight">Initializing Control System</h3>
+            <p class="text-xs text-cyan-400 uppercase tracking-widest font-mono mb-6">Smart Rail AI Network Operations</p>
+            
+            <!-- Messages Container (Preserving ID loading-messages) -->
+            <div id="loading-messages" class="space-y-2 text-left text-xs font-mono bg-slate-950/80 p-4 rounded-xl border border-slate-800/80 min-h-[140px] max-h-[160px] overflow-y-auto"></div>
+            
+            <!-- Progress Bar Container (Preserving ID progress-bar) -->
+            <div class="mt-8">
+                <div class="flex justify-between text-[11px] font-mono text-slate-400 mb-1.5">
+                    <span>SYSTEM BOOTSTRAP</span>
+                    <span>AI READY</span>
+                </div>
+                <div class="h-2 bg-slate-900 rounded-full overflow-hidden border border-slate-800 p-0.5">
+                    <div id="progress-bar" class="h-full bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 w-0 rounded-full transition-all duration-300 shadow-md shadow-cyan-500/50"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Hook -->
+    <script src="script.js"></script>
+</body>
+</html>
