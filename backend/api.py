@@ -77,6 +77,7 @@ def predict(data: RailwayInput, background_tasks: BackgroundTasks):
     
     # Execute LSTM Prediction Service
     pred_res = prediction_service.predict(input_dict)
+    input_dict["predicted_delay"] = pred_res["predicted_delay"]
     
     # Execute Recommendation Service
     recommendations = recommendation_service.generate_recommendations(
@@ -106,16 +107,35 @@ def get_analytics():
 def get_live_data():
     return live_data_service.get_live_train_status()
 
+from typing import Optional
+from fastapi import Request
+
 # 6. OPTIMIZATION ENDPOINT (Person 4 Module)
 @app.get("/optimization")
 @app.post("/optimization")
-def get_optimization(current_station: str = "S1", next_station: str = "S2", speed: int = 95, current_delay: int = 8):
-    opt_res = optimization_service.optimize_traffic({
-        "current_station": current_station,
-        "next_station": next_station,
-        "speed": speed,
-        "current_delay": current_delay
-    })
+async def get_optimization(
+    request: Request,
+    current_station: Optional[str] = "S1",
+    next_station: Optional[str] = "S2",
+    speed: Optional[int] = 95,
+    current_delay: Optional[int] = 8
+):
+    state = {}
+    if request.method == "POST":
+        try:
+            state = await request.json()
+        except Exception:
+            state = {}
+
+    if not isinstance(state, dict):
+        state = {}
+
+    state.setdefault("current_station", current_station or "S1")
+    state.setdefault("next_station", next_station or "S2")
+    state.setdefault("speed", speed if speed is not None else 95)
+    state.setdefault("current_delay", current_delay if current_delay is not None else 8)
+
+    opt_res = optimization_service.optimize_traffic(state)
     
     # Log optimization decision
     save_optimization(opt_res)

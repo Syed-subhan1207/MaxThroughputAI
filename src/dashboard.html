@@ -464,11 +464,11 @@
                                 <div class="p-4 rounded-xl bg-slate-950/80 border border-slate-800 space-y-3">
                                     <div>
                                         <div class="text-[10px] uppercase font-mono text-slate-400">Current Timetable Decision</div>
-                                        <div class="text-sm font-semibold text-slate-200" id="opt-current-decision">Standard timetable dispatch at 95 km/h</div>
+                                        <div class="text-sm font-semibold text-slate-200" id="opt-current-decision">Calculating...</div>
                                     </div>
                                     <div class="border-t border-slate-800 pt-3">
                                         <div class="text-[10px] uppercase font-mono text-emerald-400 font-bold">AI Optimized Decision</div>
-                                        <div class="text-base font-bold text-white" id="opt-optimized-decision">RL Dynamic Speed Modulation (82 km/h) & Priority Dispatch</div>
+                                        <div class="text-base font-bold text-white" id="opt-optimized-decision">Evaluating CP-SAT Optimizer...</div>
                                     </div>
                                 </div>
 
@@ -476,15 +476,15 @@
                                 <div class="grid grid-cols-3 gap-3">
                                     <div class="p-3 rounded-xl bg-slate-950/80 border border-slate-800 text-center">
                                         <div class="text-[10px] uppercase font-mono text-slate-400">Time Saved</div>
-                                        <div class="text-2xl font-bold font-mono text-emerald-400 mt-1" id="opt-time-saved">14 min</div>
+                                        <div class="text-2xl font-bold font-mono text-emerald-400 mt-1" id="opt-time-saved">--</div>
                                     </div>
                                     <div class="p-3 rounded-xl bg-slate-950/80 border border-slate-800 text-center">
                                         <div class="text-[10px] uppercase font-mono text-slate-400">Throughput Gain</div>
-                                        <div class="text-2xl font-bold font-mono text-cyan-400 mt-1" id="opt-throughput-gain">+18.4%</div>
+                                        <div class="text-2xl font-bold font-mono text-cyan-400 mt-1" id="opt-throughput-gain">--</div>
                                     </div>
                                     <div class="p-3 rounded-xl bg-slate-950/80 border border-slate-800 text-center">
                                         <div class="text-[10px] uppercase font-mono text-slate-400">Conflict Risk</div>
-                                        <div class="text-2xl font-bold font-mono text-amber-400 mt-1" id="opt-conflict-prob">3.2%</div>
+                                        <div class="text-2xl font-bold font-mono text-amber-400 mt-1" id="opt-conflict-prob">--</div>
                                     </div>
                                 </div>
                             </div>
@@ -493,16 +493,22 @@
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono p-4 rounded-xl bg-slate-900/80 border border-slate-800">
                                 <div>
                                     <span class="text-slate-400 block mb-1">OPTIMIZED ROUTE</span>
-                                    <span class="text-cyan-400 font-bold" id="opt-route">Bypass Loop Line B (S1 ➔ S2)</span>
+                                    <span class="text-cyan-400 font-bold" id="opt-route">Calculating...</span>
                                 </div>
                                 <div>
                                     <span class="text-slate-400 block mb-1">TARGET ADVISORY SPEED</span>
-                                    <span class="text-emerald-400 font-bold" id="opt-speed">82 km/h</span>
+                                    <span class="text-emerald-400 font-bold" id="opt-speed">--</span>
                                 </div>
                                 <div>
                                     <span class="text-slate-400 block mb-1">SUGGESTED SIGNAL PRIORITY</span>
-                                    <span class="text-purple-400 font-bold" id="opt-signal-priority">HIGH - PRIORITY 1</span>
+                                    <span class="text-purple-400 font-bold" id="opt-signal-priority">--</span>
                                 </div>
+                            </div>
+                            
+                            <!-- Conflict Resolution Strategy -->
+                            <div class="mt-4 p-4 rounded-xl bg-slate-900/80 border border-slate-800 text-xs font-mono">
+                                <span class="text-slate-400 block mb-1">CONFLICT RESOLUTION STRATEGY</span>
+                                <span class="text-amber-300 font-semibold" id="opt-strategy">Evaluating CP-SAT dynamic constraints...</span>
                             </div>
                         </div>
                     </div>

@@ -224,12 +224,42 @@ function loadDynamicStations() {
         });
 }
 
+function getPayloadFromDOM() {
+    const getVal = (id, fallback) => {
+        const el = document.getElementById(id);
+        return el ? el.value : fallback;
+    };
+    const getNum = (id, fallback) => {
+        const el = document.getElementById(id);
+        return el ? Number(el.value) : fallback;
+    };
+
+    return {
+        train_type: getVal('pred-train-type', 'Express'),
+        current_station: getVal('pred-current-station', 'S1'),
+        next_station: getVal('pred-next-station', 'S2'),
+        speed: getNum('pred-speed', 95),
+        current_delay: getNum('pred-current-delay', 8),
+        weather: getVal('pred-weather', 'Clear'),
+        signal_status: getVal('pred-signal-status', 'Green'),
+        track_status: getVal('pred-track-status', 'Clear'),
+        platform_available: getVal('pred-platform-available', 'Yes'),
+        train_priority: getNum('pred-train-priority', 1),
+        day_of_week: getVal('pred-day-of-week', 'Monday'),
+        hour_of_day: getNum('pred-hour-of-day', 14),
+        congestion_level: getVal('pred-congestion-level', 'Low')
+    };
+}
+
 function fetchOptimization(payload = null) {
+    if (!payload) {
+        payload = getPayloadFromDOM();
+    }
     const url = 'http://127.0.0.1:8000/optimization';
     fetch(url, {
-        method: payload ? 'POST' : 'GET',
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: payload ? JSON.stringify(payload) : null
+        body: JSON.stringify(payload)
     })
         .then(res => res.json())
         .then(data => {
@@ -241,6 +271,7 @@ function fetchOptimization(payload = null) {
             const route = document.getElementById('opt-route');
             const speed = document.getElementById('opt-speed');
             const priority = document.getElementById('opt-signal-priority');
+            const strategy = document.getElementById('opt-strategy');
 
             if (currentDec) currentDec.textContent = data.current_decision;
             if (optDec) optDec.textContent = data.optimized_decision;
@@ -250,6 +281,7 @@ function fetchOptimization(payload = null) {
             if (route) route.textContent = data.optimized_route;
             if (speed) speed.textContent = `${data.optimized_speed} km/h`;
             if (priority) priority.textContent = data.suggested_signal_priority;
+            if (strategy) strategy.textContent = data.conflict_resolution_strategy;
         })
         .catch(err => console.log("Optimization telemetry sync active."));
 }
@@ -533,11 +565,15 @@ function predictDelay() {
             if (!response.ok) throw new Error('Server responded with error');
             return response.json();
         })
-        .then(data => {
-            showPredictionResult(data);
-            fetchOptimization(payload);
-            fetchAnalytics();
-        })
+       .then(data => {
+    showPredictionResult(data);
+
+    // Pass LSTM prediction to optimizer
+    payload.predicted_delay = data.predicted_delay;
+
+    fetchOptimization(payload);
+    fetchAnalytics();
+})
         .catch(() => {
             errorBox.classList.remove('hidden');
         })

@@ -7,12 +7,17 @@ class RailwayDashboard:
 
     def __init__(self, decisions):
 
-        # Load dataset
-        self.data = pd.read_csv("data/railway_data.csv")
-        self.data["timestamp"] = pd.to_datetime(self.data["timestamp"])
-
-        self.times = sorted(self.data["timestamp"].unique())
-        self.decisions = decisions
+        # Load Phase 1 clean dataset
+        import os
+        csv_path = "data/processed_CSV/clean_trains.csv" if os.path.exists("data/processed_CSV/clean_trains.csv") else "data/railway_data.csv"
+        self.data = pd.read_csv(csv_path)
+        if "timestamp" in self.data.columns:
+            self.data["timestamp"] = pd.to_datetime(self.data["timestamp"])
+            self.times = sorted(self.data["timestamp"].unique())
+        else:
+            self.data["timestamp"] = pd.to_datetime("2026-08-07 08:00:00")
+            self.times = [pd.to_datetime("2026-08-07 08:00:00")]
+        self.decisions = decisions or {}
         # Station coordinates
         self.pos = {
             "S1": (1, 3),
