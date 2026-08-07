@@ -510,6 +510,71 @@
                                 <span class="text-slate-400 block mb-1">CONFLICT RESOLUTION STRATEGY</span>
                                 <span class="text-amber-300 font-semibold" id="opt-strategy">Evaluating CP-SAT dynamic constraints...</span>
                             </div>
+
+                        <!-- ==================== REINFORCEMENT LEARNING AGENT ==================== -->
+                        <div class="mt-6 glass-panel rounded-3xl p-6 relative overflow-hidden border border-purple-500/20 shadow-2xl">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2.5 bg-purple-500/10 border border-purple-500/30 rounded-xl text-purple-400">
+                                        <i class="fa-solid fa-brain text-lg"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-lg font-bold font-tech text-white">REINFORCEMENT LEARNING AGENT</h3>
+                                        <p class="text-xs text-slate-400">Q-Learning Decision Support & Policy Evaluation Layer</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-purple-400 animate-pulse"></span>
+                                    <span class="text-xs font-mono font-bold text-purple-300 uppercase" id="rl-agent-status">ACTIVE (ONLINE)</span>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                                <div class="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800">
+                                    <div class="text-[10px] uppercase font-mono text-slate-400">Recommended Action</div>
+                                    <div class="text-lg font-extrabold text-purple-300 font-mono mt-1" id="rl-recommended-action">MOVE</div>
+                                </div>
+                                <div class="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800">
+                                    <div class="text-[10px] uppercase font-mono text-slate-400">Confidence Score</div>
+                                    <div class="text-lg font-extrabold text-emerald-400 font-mono mt-1" id="rl-confidence">--</div>
+                                </div>
+                                <div class="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800">
+                                    <div class="text-[10px] uppercase font-mono text-slate-400">Expected Reward</div>
+                                    <div class="text-lg font-extrabold text-cyan-400 font-mono mt-1" id="rl-expected-reward">--</div>
+                                </div>
+                                <div class="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800">
+                                    <div class="text-[10px] uppercase font-mono text-slate-400">Policy Stability</div>
+                                    <div class="text-lg font-extrabold text-indigo-400 font-mono mt-1" id="rl-policy-stability">--</div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 md:grid-cols-6 gap-3 text-xs font-mono p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+                                <div>
+                                    <span class="text-slate-400 block mb-0.5">CURRENT POLICY</span>
+                                    <span class="text-purple-300 font-bold text-[11px]" id="rl-policy">Evaluating...</span>
+                                </div>
+                                <div>
+                                    <span class="text-slate-400 block mb-0.5">EPISODES TRAINED</span>
+                                    <span class="text-white font-bold" id="rl-episodes">--</span>
+                                </div>
+                                <div>
+                                    <span class="text-slate-400 block mb-0.5">LEARNING RATE</span>
+                                    <span class="text-white font-bold" id="rl-learning-rate">--</span>
+                                </div>
+                                <div>
+                                    <span class="text-slate-400 block mb-0.5">EXPLORATION RATE</span>
+                                    <span class="text-white font-bold" id="rl-epsilon">--</span>
+                                </div>
+                                <div>
+                                    <span class="text-slate-400 block mb-0.5">Q TABLE SIZE</span>
+                                    <span class="text-white font-bold" id="rl-q-table-size">--</span>
+                                </div>
+                                <div>
+                                    <span class="text-slate-400 block mb-0.5">EVALUATION STATUS</span>
+                                    <span class="text-emerald-400 font-bold">SYNCHRONIZED</span>
+                                </div>
+                            </div>
+                        </div>
                         </div>
                     </div>
                 </div>

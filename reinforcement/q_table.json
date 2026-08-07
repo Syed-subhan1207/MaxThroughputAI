@@ -1,0 +1,122 @@
+{
+  "episodes_trained": 31,
+  "best_reward": 63.0,
+  "average_reward": 1.13,
+  "highest_q_value": 44.36,
+  "q_table": {
+    "S1_S2|P:High|Sig:Green|Trk:Clear|Cong:Low|Wth:Clear|Dly:LowDelay|Spd:Fast": [
+      43.2376,
+      2.5961,
+      9.3961,
+      0.0,
+      4.0,
+      0.0
+    ],
+    "S2_S3|P:Low|Sig:Red|Trk:Blocked|Cong:Medium|Wth:Clear|Dly:MedDelay|Spd:Slow": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      2.0,
+      0.0
+    ],
+    "S3_S4|P:High|Sig:Green|Trk:Clear|Cong:High|Wth:Fog|Dly:MedDelay|Spd:Normal": [
+      2.5,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "S4_S5|P:High|Sig:Green|Trk:Clear|Cong:Low|Wth:Clear|Dly:LowDelay|Spd:Fast": [
+      0.0,
+      0.0,
+      4.8,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "S1_S2|P:High|Sig:Green|Trk:Clear|Cong:Low|Wth:Clear|Dly:LowDelay|Spd:Normal": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "S1_S2|P:High|Sig:Green|Trk:Free|Cong:Low|Wth:Fog|Dly:MedDelay|Spd:Normal": [
+      0.0,
+      1.2016,
+      15.719,
+      44.3642,
+      11.8146,
+      0.0
+    ],
+    "AA_AABH|P:High|Sig:Green|Trk:Free|Cong:Low|Wth:Fog|Dly:MedDelay|Spd:Normal": [
+      0.0,
+      -0.5,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "state_action_counts": {
+    "S1_S2|P:High|Sig:Green|Trk:Clear|Cong:Low|Wth:Clear|Dly:LowDelay|Spd:Fast": [
+      8,
+      1,
+      1,
+      0,
+      1,
+      0
+    ],
+    "S2_S3|P:Low|Sig:Red|Trk:Blocked|Cong:Medium|Wth:Clear|Dly:MedDelay|Spd:Slow": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    "S3_S4|P:High|Sig:Green|Trk:Clear|Cong:High|Wth:Fog|Dly:MedDelay|Spd:Normal": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "S4_S5|P:High|Sig:Green|Trk:Clear|Cong:Low|Wth:Clear|Dly:LowDelay|Spd:Fast": [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    "S1_S2|P:High|Sig:Green|Trk:Clear|Cong:Low|Wth:Clear|Dly:LowDelay|Spd:Normal": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "S1_S2|P:High|Sig:Green|Trk:Free|Cong:Low|Wth:Fog|Dly:MedDelay|Spd:Normal": [
+      0,
+      2,
+      2,
+      10,
+      2,
+      0
+    ],
+    "AA_AABH|P:High|Sig:Green|Trk:Free|Cong:Low|Wth:Fog|Dly:MedDelay|Spd:Normal": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

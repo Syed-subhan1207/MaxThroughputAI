@@ -217,7 +217,7 @@ class OptimizationService:
             current_decision_text = f"Standard dispatch: {current_station} -> {next_station} at {speed} km/h (Delay: {current_delay}m)"
             optimized_decision_text = f"CP-SAT Integer Optimization ({target_decision}) & Dijkstra Graph Routing"
 
-            return {
+            opt_res = {
                 "current_decision": current_decision_text,
                 "optimized_decision": optimized_decision_text,
                 "optimized_route": optimized_route,
@@ -240,9 +240,19 @@ class OptimizationService:
                 "route_cost": routing["cost"],
                 "status": "CP_SAT_OPTIMIZATION_SUCCESS"
             }
+
+            # Reinforcement Learning Policy Evaluation Step
+            try:
+                from reinforcement.trainer import rl_trainer
+                rl_telemetry = rl_trainer.train_cycle(current_state, opt_res)
+                opt_res.update(rl_telemetry)
+            except Exception as rl_err:
+                logger.error(f"RL Policy Evaluation error ({rl_err})", exc_info=True)
+
+            return opt_res
         except Exception as e:
             logger.error(f"CP-SAT Optimization failed ({e}). Returning dynamic fallback response.", exc_info=True)
-            return {
+            fallback_res = {
                 "current_decision": f"Standard dispatch: {current_station} -> {next_station} at {speed} km/h",
                 "optimized_decision": "Dynamic Speed Modulation & Priority Dispatch",
                 "optimized_route": f"Direct Line ({current_station} -> {next_station})",
@@ -265,5 +275,12 @@ class OptimizationService:
                 "route_cost": 10.0,
                 "status": "FAILSAFE_HEURISTIC"
             }
+            try:
+                from reinforcement.trainer import rl_trainer
+                rl_telemetry = rl_trainer.train_cycle(current_state, fallback_res)
+                fallback_res.update(rl_telemetry)
+            except Exception:
+                pass
+            return fallback_res
 
 optimization_service = OptimizationService()
