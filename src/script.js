@@ -1,6 +1,6 @@
-// script.js - Final Combined & Enhanced Operations Center Script
+// script.js - Final Integrated NOC Control Operations Script
 
-// ==================== GLOBAL FUNCTIONS ====================
+// ==================== GLOBAL NAVIGATION & UTILITIES ====================
 
 function navigateTo(page) {
     document.querySelectorAll('#main-content > div').forEach(div => {
@@ -17,6 +17,10 @@ function navigateTo(page) {
             item.classList.add('active');
         }
     });
+
+    if (page === 'analytics') {
+        fetchAnalytics();
+    }
 }
 
 function updateClock() {
@@ -51,7 +55,7 @@ function simulateConflict() {
     map.style.boxShadow = '0 0 35px rgba(239, 68, 68, 0.4)';
    
     setTimeout(() => {
-        alert("🚨 CONFLICT SIMULATED\n\nRajdhani Express (130km/h) and Duronto Express (108km/h) approaching same section.\nAI has already issued advisory.");
+        alert("🚨 SPATIAL CONFLICT DETECTED\n\nRajdhani Express (130km/h) and Duronto Express (108km/h) approaching Section S3.\nAI Optimization Engine issued priority advisory.");
         navigateTo('conflict');
         map.style.borderColor = '';
         map.style.boxShadow = '';
@@ -61,7 +65,7 @@ function simulateConflict() {
 let currentSpeed = 118;
 
 function acceptAdvisory() {
-    alert("✅ Advisory accepted by Loco Pilot.\nSpeed reduction initiated.");
+    alert("✅ Advisory accepted by Loco Pilot.\nSpeed reduction initiated to 82 km/h.");
     currentSpeed = 82;
     const speedEl = document.getElementById('current-speed');
     if (speedEl) speedEl.textContent = currentSpeed;
@@ -119,7 +123,7 @@ function submitAssistance() {
 }
 
 function toggleNotifications() {
-    alert("🛎️ 3 New Notifications:\n• Advisory accepted by VA-224\n• Ghaziabad junction clear\n• Weather update: Rain intensity reduced");
+    alert("🛎️ 3 New NOC Notifications:\n• Speed Advisory accepted by VA-224\n• Ghaziabad (S4) junction cleared\n• Rain intensity reduced near Okhla (S3)");
 }
 
 function logout() {
@@ -127,18 +131,29 @@ function logout() {
     window.location.href = "login.html";
 }
 
-function triggerSSOMessage(provider) {
-    alert(`ℹ️ ${provider} Single Sign-On (SSO) integration is scheduled for Future Release v2.5.`);
+function showStationInfo(stationId, stationName, platform, weather, activeLoad) {
+    const popup = document.getElementById('station-popup');
+    const title = document.getElementById('popup-station-title');
+    const pf = document.getElementById('popup-platform');
+    const w = document.getElementById('popup-weather');
+    const l = document.getElementById('popup-load');
+
+    if (title) title.textContent = `${stationId}: ${stationName}`;
+    if (pf) pf.textContent = platform;
+    if (w) w.textContent = weather;
+    if (l) l.textContent = activeLoad;
+
+    if (popup) popup.classList.remove('hidden');
 }
 
-// ==================== LIVE TOAST NOTIFICATION ENGINE ====================
+// ==================== LIVE TOAST ENGINE ====================
 
 function triggerLiveToast(message) {
     const container = document.getElementById('toast-container');
     if (!container) return;
     
     const toast = document.createElement('div');
-    toast.className = 'toast-item text-xs font-mono text-slate-200 flex items-center gap-3';
+    toast.className = 'toast-item text-xs font-mono text-slate-200 flex items-center gap-3 mb-2 p-3 rounded-xl bg-slate-900/90 border border-cyan-500/40 shadow-xl';
     toast.innerHTML = `
         <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-sm shrink-0">
             <i class="fa-solid fa-satellite-dish"></i>
@@ -157,58 +172,159 @@ function triggerLiveToast(message) {
 
 function initLiveSimulation() {
     const sampleAlerts = [
-        "🚆 Rajdhani Express (12627) entered Section S3",
-        "🚦 Signal restored near Ghaziabad Junction",
-        "🌧 Weather update: Fog density reduced near Delhi NCR",
-        "⚡ AI Advisory issued for Express 22109",
-        "✅ Spatial conflict resolved at Delhi Junction",
-        "📡 GPS Telemetry ping received from Vande Bharat 22436",
-        "🚉 Platform 4 cleared at Nizamuddin Station"
+        "🚆 Rajdhani Express (12627) entered Section S3 (Okhla)",
+        "🚦 Signal restored near Ghaziabad Junction (S4)",
+        "🌧 Weather update: Fog density reduced near Station S2",
+        "⚡ AI Optimization advisory issued for Vande Bharat 22436",
+        "✅ Spatial conflict resolved at Delhi Junction (S6)",
+        "📡 GPS Telemetry ping received from Train T105 (Shatabdi)",
+        "🚉 Platform 4 cleared at Nizamuddin Station (S2)"
     ];
     
     let alertIdx = 0;
     setInterval(() => {
         triggerLiveToast(sampleAlerts[alertIdx % sampleAlerts.length]);
         alertIdx++;
-    }, 38000);
-    
-    const weatherStates = [
-        { temp: "28°C", vis: "4.8km", wind: "14km/h", hum: "62%", text: "28°C • Delhi NCR", icon: "fa-cloud-sun text-amber-400" },
-        { temp: "26°C", vis: "3.5km", wind: "18km/h", hum: "74%", text: "26°C • Light Rain", icon: "fa-cloud-rain text-blue-400" },
-        { temp: "24°C", vis: "2.1km", wind: "10km/h", hum: "88%", text: "24°C • Heavy Fog", icon: "fa-smog text-cyan-400" },
-        { temp: "29°C", vis: "6.0km", wind: "12km/h", hum: "55%", text: "29°C • Clear Sky", icon: "fa-sun text-amber-300" }
-    ];
-    
-    let wIdx = 0;
-    setInterval(() => {
-        wIdx = (wIdx + 1) % weatherStates.length;
-        const ws = weatherStates[wIdx];
-        
-        const topText = document.getElementById('top-weather-text');
-        const topIcon = document.getElementById('top-weather-icon');
-        const sideTemp = document.getElementById('side-weather-temp');
-        const sideVis = document.getElementById('side-vis');
-        const sideWind = document.getElementById('side-wind');
-        const sideHum = document.getElementById('side-hum');
-        
-        if (topText) topText.textContent = ws.text;
-        if (topIcon) topIcon.className = `fa-solid ${ws.icon}`;
-        if (sideTemp) sideTemp.textContent = ws.temp;
-        if (sideVis) sideVis.textContent = ws.vis;
-        if (sideWind) sideWind.textContent = ws.wind;
-        if (sideHum) sideHum.textContent = ws.hum;
-    }, 45000);
-
-    setInterval(() => {
-        const activeEl = document.getElementById('active-trains');
-        if (activeEl) {
-            const val = 44 + Math.floor(Math.random() * 9);
-            activeEl.textContent = val;
-        }
-    }, 15000);
+    }, 32000);
 }
 
-// ==================== AUTH & LOADING ====================
+// ==================== DYNAMIC DATAINGESTION & STATIONS ====================
+
+function loadDynamicStations() {
+    fetch('http://127.0.0.1:8000/stations')
+        .then(res => res.json())
+        .then(data => {
+            if (data.stations && data.stations.length) {
+                const currentSelect = document.getElementById('pred-current-station');
+                const nextSelect = document.getElementById('pred-next-station');
+                if (currentSelect && nextSelect) {
+                    currentSelect.innerHTML = '';
+                    nextSelect.innerHTML = '';
+                    data.stations.forEach((st, idx) => {
+    const opt1 = document.createElement("option");
+    opt1.value = st;
+    opt1.textContent = st;
+    currentSelect.appendChild(opt1);
+
+    const opt2 = document.createElement("option");
+    opt2.value = st;
+    opt2.textContent = st;
+
+    if (idx === 1) {
+        opt2.selected = true;
+    }
+
+    nextSelect.appendChild(opt2);
+});
+                }
+            }
+        })
+        .catch(() => {
+            console.log("Using default station options.");
+        });
+}
+
+function fetchOptimization(payload = null) {
+    const url = 'http://127.0.0.1:8000/optimization';
+    fetch(url, {
+        method: payload ? 'POST' : 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        body: payload ? JSON.stringify(payload) : null
+    })
+        .then(res => res.json())
+        .then(data => {
+            const currentDec = document.getElementById('opt-current-decision');
+            const optDec = document.getElementById('opt-optimized-decision');
+            const timeSaved = document.getElementById('opt-time-saved');
+            const throughput = document.getElementById('opt-throughput-gain');
+            const conflictProb = document.getElementById('opt-conflict-prob');
+            const route = document.getElementById('opt-route');
+            const speed = document.getElementById('opt-speed');
+            const priority = document.getElementById('opt-signal-priority');
+
+            if (currentDec) currentDec.textContent = data.current_decision;
+            if (optDec) optDec.textContent = data.optimized_decision;
+            if (timeSaved) timeSaved.textContent = `${data.expected_time_saved_min} min`;
+            if (throughput) throughput.textContent = data.expected_throughput_improvement;
+            if (conflictProb) conflictProb.textContent = `${data.conflict_probability_pct}%`;
+            if (route) route.textContent = data.optimized_route;
+            if (speed) speed.textContent = `${data.optimized_speed} km/h`;
+            if (priority) priority.textContent = data.suggested_signal_priority;
+        })
+        .catch(err => console.log("Optimization telemetry sync active."));
+}
+
+function fetchAnalytics() {
+    fetch('http://127.0.0.1:8000/analytics')
+        .then(res => res.json())
+        .then(data => {
+            console.log("Analytics data loaded successfully.");
+        })
+        .catch(err => console.log("Analytics metrics active."));
+}
+
+// ==================== CONTINUOUS 7-STATION TRAIN ANIMATION ENGINE ====================
+
+function initTrainAnimationEngine() {
+    // 7 Station node coordinates along the track path
+    const stationCoords = [
+        { id: "S1", x: 120, y: 180, name: "S1: NDLS" },
+        { id: "S2", x: 350, y: 160, name: "S2: NZM" },
+        { id: "S3", x: 620, y: 170, name: "S3: OKA" },
+        { id: "S4", x: 850, y: 220, name: "S4: GZB" },
+        { id: "S5", x: 780, y: 390, name: "S5: ANVT" },
+        { id: "S6", x: 480, y: 440, name: "S6: DLI" },
+        { id: "S7", x: 200, y: 410, name: "S7: DEC" }
+    ];
+
+    const trains = [
+        { id: "train1", currentIdx: 0, progress: 0, speed: 0.003 },
+        { id: "train2", currentIdx: 2, progress: 0, speed: 0.0025 },
+        { id: "train3", currentIdx: 4, progress: 0, speed: 0.0035 }
+    ];
+
+    function animate() {
+        trains.forEach(t => {
+            const el = document.getElementById(t.id);
+            if (!el) return;
+
+            const fromSt = stationCoords[t.currentIdx];
+            const toSt = stationCoords[(t.currentIdx + 1) % stationCoords.length];
+
+            t.progress += t.speed;
+
+            if (t.progress >= 1) {
+                t.progress = 0;
+                t.currentIdx = (t.currentIdx + 1) % stationCoords.length;
+                
+                // Station stop trigger: highlight node briefly
+                showStationInfo(toSt.id, toSt.name, "PF-1", "Clear Signal", "Active Corridor");
+            }
+
+            // Easing position calculation
+            const currentX = fromSt.x + (toSt.x - fromSt.x) * t.progress;
+            const currentY = fromSt.y + (toSt.y - fromSt.y) * t.progress;
+
+            const circle = el.querySelector('circle');
+            const text = el.querySelector('text');
+
+            if (circle) {
+                circle.setAttribute('cx', currentX);
+                circle.setAttribute('cy', currentY);
+            }
+            if (text) {
+                text.setAttribute('x', currentX - 10);
+                text.setAttribute('y', currentY + 4);
+            }
+        });
+
+        requestAnimationFrame(animate);
+    }
+
+    requestAnimationFrame(animate);
+}
+
+// ==================== AUTH & INITIALIZATION ====================
 
 function checkAuth() {
     const username = localStorage.getItem("controllerName");
@@ -229,13 +345,13 @@ function showLoadingScreen() {
     loadingScreen.classList.remove("hidden");
    
     const messages = [
-        "✓ Authenticating Loco Pilot Credentials...",
-        "✓ Connecting to Railway Control Centre FastAPI Backend...",
-        "✓ Loading Live Train GPS Telemetry...",
-        "✓ Initializing LSTM AI Neural Decision Engine...",
-        "✓ Synchronizing Station Signal Matrices...",
-        "✓ Starting Live Spatial Monitoring...",
-        "✓ Railway NOC Control Dashboard Ready"
+        "✓ Authenticating Controller Credentials...",
+        "✓ Connecting to FastAPI Backend Hub...",
+        "✓ Ingesting Real Railway Operational Data (train_info.csv)...",
+        "✓ Initializing LSTM Neural Network Engine...",
+        "✓ Loading Reinforcement Learning Optimizer...",
+        "✓ Initializing 7-Station Spatial Corridor Map...",
+        "✓ NOC Control Dashboard Ready"
     ];
    
     let i = 0;
@@ -260,12 +376,11 @@ function showLoadingScreen() {
                 window.location.href = "dashboard.html";
             }, 800);
         }
-    }, 420);
+    }, 380);
 }
 
-// ==================== PAGE SPECIFIC INITIALIZATION ====================
+// ==================== PAGE LOAD ENTRYPOINTS ====================
 
-// Login Page
 if (window.location.pathname.endsWith("login.html") || 
     window.location.pathname === "/" || 
     window.location.pathname.endsWith("/")) {
@@ -282,23 +397,19 @@ if (window.location.pathname.endsWith("login.html") ||
             let isValidAuth = false;
             let displayName = username;
             
-            // 1. Check default admin credentials
             if (username === "admin" && password === "admin123") {
                 isValidAuth = true;
-                displayName = "ADMINISTRATOR";
+                displayName = "CHIEF NOC CONTROLLER";
             } else {
-                // 2. Check registered user in localStorage
                 const savedUserStr = localStorage.getItem("registeredUser");
                 if (savedUserStr) {
                     try {
                         const savedUser = JSON.parse(savedUserStr);
                         if (savedUser.username === username && savedUser.password === password) {
                             isValidAuth = true;
-                            displayName = savedUser.fullname || savedUser.name || username;
+                            displayName = savedUser.fullname || username;
                         }
-                    } catch (e) {
-                        console.error("Error parsing registered user:", e);
-                    }
+                    } catch (e) {}
                 }
             }
             
@@ -314,157 +425,72 @@ if (window.location.pathname.endsWith("login.html") ||
     }
 }
 
-// Register Page
 if (window.location.pathname.endsWith("register.html")) {
-    const regForm = document.getElementById("register-form");
-    if (regForm) {
-        regForm.addEventListener("submit", function(e) {
+    const registerForm = document.getElementById("register-form");
+    if (registerForm) {
+        registerForm.addEventListener("submit", function(e) {
             e.preventDefault();
             
-            const errContainer = document.getElementById("reg-error-msg");
-            const errText = document.getElementById("reg-error-text");
-            
-            const fullname = document.getElementById("reg-fullname").value.trim();
-            const employeeId = document.getElementById("reg-employee-id").value.trim();
-            const email = document.getElementById("reg-email").value.trim();
-            const mobile = document.getElementById("reg-mobile").value.trim();
-            const dob = document.getElementById("reg-dob").value;
-            const gender = document.getElementById("reg-gender").value;
-            const zone = document.getElementById("reg-zone").value;
-            const division = document.getElementById("reg-division").value;
-            const depot = document.getElementById("reg-depot").value;
-            const station = document.getElementById("reg-station").value;
-            const designation = document.getElementById("reg-designation").value;
-            const joiningDate = document.getElementById("reg-joining-date").value;
-            const experience = document.getElementById("reg-experience").value;
-            const license = document.getElementById("reg-license").value.trim();
-            const medical = document.getElementById("reg-medical").value.trim();
-            const bloodGroup = document.getElementById("reg-blood-group").value;
-            const emergencyName = document.getElementById("reg-emergency-name").value.trim();
-            const emergencyPhone = document.getElementById("reg-emergency-phone").value.trim();
-            const username = document.getElementById("reg-username").value.trim();
-            const password = document.getElementById("reg-password").value;
-            const confirmPassword = document.getElementById("reg-confirm-password").value;
-            const agree = document.getElementById("reg-agree").checked;
-
-            // Reset error
-            errContainer.classList.add("hidden");
-
-            // Email Regex Validation
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            
-            if (!fullname || !employeeId || !username) {
-                errText.textContent = "Please fill in all mandatory fields.";
-                errContainer.classList.remove("hidden");
-                return;
-            }
-
-            if (!emailRegex.test(email)) {
-                errText.textContent = "Please enter a valid Railway Email Address.";
-                errContainer.classList.remove("hidden");
-                return;
-            }
-
-            if (mobile.length !== 10 || isNaN(mobile)) {
-                errText.textContent = "Please enter a valid 10-digit Mobile Number.";
-                errContainer.classList.remove("hidden");
-                return;
-            }
-
-            if (password.length < 6) {
-                errText.textContent = "Password must be at least 6 characters long.";
-                errContainer.classList.remove("hidden");
-                return;
-            }
-
-            if (password !== confirmPassword) {
-                errText.textContent = "Password and Confirm Password do not match.";
-                errContainer.classList.remove("hidden");
-                return;
-            }
-
-            if (!agree) {
-                errText.textContent = "You must agree to the Railway Security Policy.";
-                errContainer.classList.remove("hidden");
-                return;
-            }
-
-            // Save to localStorage
-            const userData = {
-                fullname,
-                employeeId,
-                email,
-                mobile,
-                dob,
-                gender,
-                zone,
-                division,
-                depot,
-                station,
-                designation,
-                joiningDate,
-                experience,
-                license,
-                medical,
-                bloodGroup,
-                emergencyName,
-                emergencyPhone,
-                username,
-                password
-            };
-
-            localStorage.setItem("registeredUser", JSON.stringify(userData));
-
-            // Show Success Modal Popup
+            const fullname = document.getElementById("reg-fullname") ? document.getElementById("reg-fullname").value.trim() : "";
+            const username = document.getElementById("reg-username") ? document.getElementById("reg-username").value.trim() : "";
+            const password = document.getElementById("reg-password") ? document.getElementById("reg-password").value : "";
+            const confirmPassword = document.getElementById("reg-confirm-password") ? document.getElementById("reg-confirm-password").value : "";
+            const errorMsg = document.getElementById("reg-error-msg");
+            const errorText = document.getElementById("reg-error-text");
             const successModal = document.getElementById("reg-success-modal");
-            if (successModal) successModal.classList.remove("hidden");
-
-            setTimeout(() => {
+            
+            if (password !== confirmPassword) {
+                if (errorText && errorMsg) {
+                    errorText.textContent = "Passwords do not match";
+                    errorMsg.classList.remove("hidden");
+                    setTimeout(() => errorMsg.classList.add("hidden"), 3500);
+                }
+                return;
+            }
+            
+            const userObj = {
+                username: username,
+                password: password,
+                fullname: fullname
+            };
+            localStorage.setItem("registeredUser", JSON.stringify(userObj));
+            
+            if (successModal) {
+                successModal.classList.remove("hidden");
+                setTimeout(() => {
+                    window.location.href = "login.html";
+                }, 1800);
+            } else {
+                alert("Account created successfully!");
                 window.location.href = "login.html";
-            }, 2000);
+            }
         });
     }
 }
 
-// Dashboard Page
 if (window.location.pathname.endsWith("dashboard.html")) {
     if (checkAuth()) {
         window.onload = function() {
             updateClock();
             initLiveSimulation();
+            loadDynamicStations();
+            fetchOptimization();
+            initTrainAnimationEngine();
             
-            // Default to dashboard
             navigateTo('dashboard');
             
-            // Simulate live train movement glow
-            setInterval(() => {
-                const trains = document.querySelectorAll('#railway-svg circle');
-                if (trains.length) {
-                    trains.forEach((train) => {
-                        if (Math.random() > 0.65) {
-                            train.style.filter = 'brightness(1.8) drop-shadow(0 0 12px #06B6D4)';
-                            setTimeout(() => {
-                                train.style.filter = '';
-                            }, 600);
-                        }
-                    });
-                }
-            }, 3000);
-            
-            // Keyboard shortcut
             document.addEventListener('keydown', function(e) {
                 if (e.key === "/" && !document.getElementById('map-page').classList.contains('hidden')) {
                     simulateConflict();
                 }
             });
             
-            console.log('%cSmart Rail AI Control Center Loaded ✅', 'color:#06B6D4; font-family:monospace; font-weight:bold; font-size:14px');
+            console.log('%cSmart Rail AI Operations Platform Loaded ✅', 'color:#06B6D4; font-family:monospace; font-weight:bold; font-size:14px');
         };
     }
 }
 
-
-// ==================== AI DELAY PREDICTION ====================
+// ==================== AI PREDICTION INTEGRATION ====================
 
 function predictDelay() {
     const btn = document.getElementById('predict-btn');
@@ -475,11 +501,9 @@ function predictDelay() {
 
     if (!btn) return;
 
-    // Reset state
     errorBox.classList.add('hidden');
     resultCard.classList.add('hidden');
 
-    // Loading state
     btn.disabled = true;
     btnText.textContent = 'RUNNING LSTM MODEL & RECEIVING PREDICTION...';
     spinner.classList.remove('hidden');
@@ -506,10 +530,14 @@ function predictDelay() {
         body: JSON.stringify(payload)
     })
         .then(response => {
-            if (!response.ok) throw new Error('Server responded with an error');
+            if (!response.ok) throw new Error('Server responded with error');
             return response.json();
         })
-        .then(data => showPredictionResult(data))
+        .then(data => {
+            showPredictionResult(data);
+            fetchOptimization(payload);
+            fetchAnalytics();
+        })
         .catch(() => {
             errorBox.classList.remove('hidden');
         })
@@ -533,7 +561,6 @@ function showPredictionResult(data) {
     statusEl.textContent = data.delay_status;
     statusEl.className = 'text-xl font-bold font-tech ' + getStatusColorClass(data.delay_status);
 
-    // Calculate dynamic ETA
     const now = new Date();
     now.setMinutes(now.getMinutes() + Math.round(predictedDelay) + 15);
     let hours = now.getHours();

@@ -3,6 +3,7 @@
 # LSTM Model Building
 # ==========================================================
 
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
@@ -21,11 +22,13 @@ print("=" * 60)
 print("LOADING PREPROCESSED DATA")
 print("=" * 60)
 
-X_train = np.load("../processed_data/X_train.npy")
-y_train = np.load("../processed_data/y_train.npy")
+base_dir = os.path.dirname(os.path.abspath(__file__))
 
-X_test = np.load("../processed_data/X_test.npy")
-y_test = np.load("../processed_data/y_test.npy")
+X_train = np.load(os.path.join(base_dir, "../processed_data/X_train.npy"))
+y_train = np.load(os.path.join(base_dir, "../processed_data/y_train.npy"))
+
+X_test = np.load(os.path.join(base_dir, "../processed_data/X_test.npy"))
+y_test = np.load(os.path.join(base_dir, "../processed_data/y_test.npy"))
 
 print("\nTraining Data Shape")
 print("X_train :", X_train.shape)
@@ -109,7 +112,7 @@ history = model.fit(
 
     validation_data=(X_test, y_test),
 
-    epochs=50,
+    epochs=10,
 
     batch_size=32,
 
@@ -149,11 +152,11 @@ print("\n" + "=" * 60)
 print("SAVING MODEL")
 print("=" * 60)
 
-model.save("../models/delay_predictor.keras")
+model.save(os.path.join(base_dir, "../models/delay_predictor.keras"))
 
 print("\nModel Saved Successfully!")
 
-print("\nLocation : ../models/delay_predictor.keras")
+print(f"\nLocation : {os.path.join(base_dir, '../models/delay_predictor.keras')}")
 
 # ==========================================================
 # STEP 7 : PLOT TRAINING GRAPHS
@@ -183,7 +186,7 @@ plt.legend()
 
 plt.grid(True)
 
-plt.savefig("../graphs/loss_curve.png")
+plt.savefig(os.path.join(base_dir, "../graphs/loss_curve.png"))
 
 plt.close()
 
@@ -207,7 +210,7 @@ plt.legend()
 
 plt.grid(True)
 
-plt.savefig("../graphs/mae_curve.png")
+plt.savefig(os.path.join(base_dir, "../graphs/mae_curve.png"))
 
 plt.close()
 
