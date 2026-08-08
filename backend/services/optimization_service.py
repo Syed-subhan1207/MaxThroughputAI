@@ -8,7 +8,7 @@ All metrics are 100% dynamically derived from solver output and graph analysis.
 import logging
 from models.train import Train
 from utils.data_loader import DataLoader
-from utils.railway_graph import build_graph, find_shortest_path_details
+from utils.railway_graph import build_graph, find_shortest_path_details, a_star_search, bfs_search
 from optimization.optimizer import RailwayOptimizer
 from optimization.conflict_detector import ConflictDetector
 from optimization.constraints import Constraints
@@ -104,11 +104,14 @@ class OptimizationService:
             # 5. Prioritized Railway Scheduler Execution
             scheduled_trains = self.scheduler.generate_schedule(trains, decisions)
 
-            # 6. Graph Topology Routing (NetworkX Dijkstra Shortest Path)
+            # 6. Graph Topology Routing (NetworkX Dijkstra, A*, and BFS)
             graph = build_graph()
             routing = find_shortest_path_details(graph, current_station, next_station)
             graph_path = routing["path"]
             path_str = " -> ".join(graph_path)
+
+            a_star_res = a_star_search(graph, current_station, next_station)
+            bfs_res = bfs_search(graph, current_station, next_station)
 
             # 7. Dynamic Metrics Computation
             target_decision = decisions.get(active_train_id, "MOVE")
@@ -238,6 +241,8 @@ class OptimizationService:
                 "shortest_path_nodes": graph_path,
                 "path_distance_km": routing["distance_km"],
                 "route_cost": routing["cost"],
+                "a_star": a_star_res,
+                "bfs": bfs_res,
                 "status": "CP_SAT_OPTIMIZATION_SUCCESS"
             }
 
@@ -252,6 +257,8 @@ class OptimizationService:
             return opt_res
         except Exception as e:
             logger.error(f"CP-SAT Optimization failed ({e}). Returning dynamic fallback response.", exc_info=True)
+            fallback_a_star = {"path": [current_station, next_station], "cost": 10.0, "visited_nodes": [current_station, next_station]}
+            fallback_bfs = {"connected": True, "path": [current_station, next_station], "visited_nodes": [current_station, next_station]}
             fallback_res = {
                 "current_decision": f"Standard dispatch: {current_station} -> {next_station} at {speed} km/h",
                 "optimized_decision": "Dynamic Speed Modulation & Priority Dispatch",
@@ -273,6 +280,8 @@ class OptimizationService:
                 "shortest_path_nodes": [current_station, next_station],
                 "path_distance_km": 15.0,
                 "route_cost": 10.0,
+                "a_star": fallback_a_star,
+                "bfs": fallback_bfs,
                 "status": "FAILSAFE_HEURISTIC"
             }
             try:

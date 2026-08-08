@@ -1,8 +1,8 @@
 {
-  "episodes_trained": 31,
+  "episodes_trained": 1500,
   "best_reward": 63.0,
-  "average_reward": 1.13,
-  "highest_q_value": 44.36,
+  "average_reward": 0.17,
+  "highest_q_value": 898.72,
   "q_table": {
     "S1_S2|P:High|Sig:Green|Trk:Clear|Cong:Low|Wth:Clear|Dly:LowDelay|Spd:Fast": [
       43.2376,
@@ -45,16 +45,40 @@
       0.0
     ],
     "S1_S2|P:High|Sig:Green|Trk:Free|Cong:Low|Wth:Fog|Dly:MedDelay|Spd:Normal": [
-      0.0,
-      1.2016,
-      15.719,
-      44.3642,
-      11.8146,
-      0.0
+      848.2645,
+      815.9228,
+      826.5326,
+      898.7218,
+      802.2358,
+      836.5551
     ],
     "AA_AABH|P:High|Sig:Green|Trk:Free|Cong:Low|Wth:Fog|Dly:MedDelay|Spd:Normal": [
       0.0,
       -0.5,
+      0.0,
+      0.0,
+      7.98,
+      0.0
+    ],
+    "S1_S2|P:High|Sig:Green|Trk:Clear|Cong:Low|Wth:Clear|Dly:MedDelay|Spd:Normal": [
+      0.0,
+      0.0,
+      0.0,
+      4.5,
+      0.0,
+      0.0
+    ],
+    "S1_S2|P:High|Sig:Green|Trk:Clear|Cong:Low|Wth:Clear|Dly:MedDelay|Spd:Fast": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "_|P:High|Sig:Green|Trk:Clear|Cong:Low|Wth:Clear|Dly:MedDelay|Spd:Normal": [
+      4.5,
+      0.0,
       0.0,
       0.0,
       0.0,
@@ -103,16 +127,40 @@
       0
     ],
     "S1_S2|P:High|Sig:Green|Trk:Free|Cong:Low|Wth:Fog|Dly:MedDelay|Spd:Normal": [
-      0,
-      2,
-      2,
-      10,
-      2,
-      0
+      34,
+      42,
+      32,
+      1309,
+      31,
+      33
     ],
     "AA_AABH|P:High|Sig:Green|Trk:Free|Cong:Low|Wth:Fog|Dly:MedDelay|Spd:Normal": [
       0,
       1,
+      0,
+      0,
+      2,
+      0
+    ],
+    "S1_S2|P:High|Sig:Green|Trk:Clear|Cong:Low|Wth:Clear|Dly:MedDelay|Spd:Normal": [
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "S1_S2|P:High|Sig:Green|Trk:Clear|Cong:Low|Wth:Clear|Dly:MedDelay|Spd:Fast": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "_|P:High|Sig:Green|Trk:Clear|Cong:Low|Wth:Clear|Dly:MedDelay|Spd:Normal": [
+      1,
+      0,
       0,
       0,
       0,

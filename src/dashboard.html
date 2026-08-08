@@ -263,7 +263,7 @@
                         </div>
 
                         <!-- 13 INPUT FORM (All IDs strictly preserved!) -->
-                        <form id="prediction-form" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <form id="prediction-form" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" onsubmit="event.preventDefault(); predictDelay(event);">
                             <div>
                                 <label class="text-xs font-semibold text-slate-300 mb-1.5 block">Train Type</label>
                                 <select id="pred-train-type" class="w-full bg-slate-900 border border-slate-700 focus:border-cyan-400 rounded-xl px-3.5 py-2.5 text-sm outline-none text-white">
@@ -575,6 +575,67 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- ROUTING & DECISION ENGINE ARCHITECTURE CARD -->
+                        <div id="routing-engine-card" class="mt-6 glass-panel rounded-3xl p-6 border border-cyan-500/30 shadow-2xl relative overflow-hidden">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2.5 bg-cyan-500/10 border border-cyan-500/30 rounded-xl text-cyan-400">
+                                        <i class="fa-solid fa-route text-lg"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-lg font-bold font-tech text-white">ROUTING & DECISION ENGINE</h3>
+                                        <p class="text-xs text-slate-400 font-mono">SIMULATED ALGORITHMIC ARCHITECTURE • 7-STATION NETWORK</p>
+                                    </div>
+                                </div>
+                                <span class="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-mono font-bold">
+                                    HYBRID AI ENGINE
+                                </span>
+                            </div>
+
+                            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 text-xs font-mono">
+                                <div class="p-3 rounded-xl bg-slate-950/80 border border-slate-800 text-center">
+                                    <div class="text-[10px] text-cyan-400 font-bold mb-1">GPS</div>
+                                    <div class="text-[11px] text-slate-300 font-medium">SIMULATED GPS TELEMETRY</div>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-950/80 border border-slate-800 text-center">
+                                    <div class="text-[10px] text-emerald-400 font-bold mb-1">LSTM</div>
+                                    <div class="text-[11px] text-slate-300 font-medium">MODEL INFERENCE</div>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-950/80 border border-slate-800 text-center">
+                                    <div class="text-[10px] text-purple-400 font-bold mb-1">BFS</div>
+                                    <div class="text-[11px] text-slate-300 font-medium">NETWORK CONNECTIVITY</div>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-950/80 border border-slate-800 text-center">
+                                    <div class="text-[10px] text-blue-400 font-bold mb-1">A*</div>
+                                    <div class="text-[11px] text-slate-300 font-medium">HEURISTIC ROUTING</div>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-950/80 border border-slate-800 text-center">
+                                    <div class="text-[10px] text-amber-400 font-bold mb-1">DIJKSTRA</div>
+                                    <div class="text-[11px] text-slate-300 font-medium">WEIGHTED ROUTING</div>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-950/80 border border-slate-800 text-center">
+                                    <div class="text-[10px] text-indigo-400 font-bold mb-1">CP-SAT</div>
+                                    <div class="text-[11px] text-slate-300 font-medium">TRAFFIC OPTIMIZATION</div>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-950/80 border border-slate-800 text-center">
+                                    <div class="text-[10px] text-pink-400 font-bold mb-1">RL</div>
+                                    <div class="text-[11px] text-slate-300 font-medium">DECISION SUPPORT</div>
+                                </div>
+                            </div>
+
+                            <!-- Live Routing Telemetry Output -->
+                            <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono p-3.5 rounded-xl bg-slate-900/90 border border-slate-800">
+                                <div>
+                                    <span class="text-blue-400 font-bold">A* HEURISTIC PATH:</span>
+                                    <span id="a-star-path" class="text-white ml-2 font-mono">S1 → S2 → S3 → S4 (Cost: 12.0)</span>
+                                </div>
+                                <div>
+                                    <span class="text-purple-400 font-bold">BFS CONNECTIVITY:</span>
+                                    <span id="bfs-status" class="text-white ml-2 font-mono">CONNECTED (Visited: 4 nodes)</span>
+                                </div>
+                            </div>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -688,20 +749,39 @@
                             </div>
                         </div>
 
+                        <!-- SIMULATED GPS TELEMETRY PANEL -->
+                        <div id="gps-telemetry-panel" class="absolute top-6 left-6 glass-card p-4 rounded-2xl w-80 border border-blue-500/40 shadow-2xl z-20 font-mono text-xs">
+                            <div class="flex justify-between items-center mb-2 pb-1.5 border-b border-slate-800">
+                                <span class="text-blue-400 font-bold flex items-center gap-1.5">
+                                    <i class="fa-solid fa-satellite text-cyan-400"></i> SIMULATED GPS TELEMETRY
+                                </span>
+                                <span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 text-[10px] font-bold">CONNECTED</span>
+                            </div>
+                            <div class="space-y-1.5 text-slate-300 text-[11px]" id="gps-panel-content">
+                                <div class="flex justify-between"><span class="text-slate-400">Train:</span> <span id="gps-train-name" class="text-white font-bold">Rajdhani 12302</span></div>
+                                <div class="flex justify-between"><span class="text-slate-400">Latitude:</span> <span id="gps-lat" class="text-cyan-400">28.6139° N</span></div>
+                                <div class="flex justify-between"><span class="text-slate-400">Longitude:</span> <span id="gps-lng" class="text-cyan-400">77.2090° E</span></div>
+                                <div class="flex justify-between"><span class="text-slate-400">Heading:</span> <span id="gps-heading" class="text-emerald-400">084°</span></div>
+                                <div class="flex justify-between"><span class="text-slate-400">Section:</span> <span id="gps-section" class="text-amber-400">S1 → S2</span></div>
+                                <div class="flex justify-between"><span class="text-slate-400">Speed:</span> <span id="gps-speed-val" class="text-emerald-400 font-bold">132 km/h</span></div>
+                                <div class="flex justify-between"><span class="text-slate-400">Last Ping:</span> <span id="gps-ping" class="text-slate-400">1 sec ago</span></div>
+                            </div>
+                        </div>
+
                         <div class="absolute bottom-6 left-6 glass-card p-4 rounded-2xl w-80">
                             <div class="text-xs uppercase font-mono tracking-wider text-slate-400 mb-3 font-semibold">Active Movements Telemetry</div>
-                            <div class="space-y-2.5 text-xs font-mono">
+                            <div class="space-y-2.5 text-xs font-mono" id="active-movements-container">
                                 <div class="flex justify-between items-center p-2 rounded-lg bg-slate-900/80">
                                     <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-cyan-400"></span> Rajdhani (12302)</span>
-                                    <span class="text-emerald-400 font-bold">132 km/h</span>
+                                    <span class="text-emerald-400 font-bold" id="t1-telemetry-speed">132 km/h</span>
                                 </div>
                                 <div class="flex justify-between items-center p-2 rounded-lg bg-slate-900/80">
                                     <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-amber-400"></span> Vande Bharat (22436)</span>
-                                    <span class="text-amber-400 font-bold">98 km/h</span>
+                                    <span class="text-amber-400 font-bold" id="t2-telemetry-speed">98 km/h</span>
                                 </div>
                                 <div class="flex justify-between items-center p-2 rounded-lg bg-slate-900/80">
                                     <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-red-400"></span> Duronto Express (12214)</span>
-                                    <span class="text-red-400 font-bold">115 km/h</span>
+                                    <span class="text-red-400 font-bold" id="t3-telemetry-speed">115 km/h</span>
                                 </div>
                             </div>
                         </div>
@@ -1065,6 +1145,27 @@
                     CANCEL
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- TRAIN TELEMETRY TOOLTIP POPOVER -->
+    <div id="train-tooltip" class="hidden glass-card p-4 rounded-2xl w-72 border border-cyan-500/50 shadow-2xl z-[9999] text-xs font-mono">
+        <div class="flex justify-between items-center pb-2 mb-2 border-b border-slate-800">
+            <div>
+                <div class="font-bold text-white text-sm" id="tt-train-name">RAJDHANI EXPRESS</div>
+                <div class="text-[10px] text-cyan-400" id="tt-train-number">#12302</div>
+            </div>
+            <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-[10px] font-bold" id="tt-gps-status">CONNECTED (SIMULATED)</span>
+        </div>
+        <div class="space-y-1.5 text-slate-300">
+            <div class="flex justify-between"><span class="text-slate-400">Current Station:</span> <span id="tt-current-st" class="text-white font-bold">S1 (NDLS)</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Next Station:</span> <span id="tt-next-st" class="text-white font-bold">S2 (NZM)</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Current Speed:</span> <span id="tt-current-speed" class="text-emerald-400 font-bold">132 km/h</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Base Speed:</span> <span id="tt-base-speed" class="text-slate-400">132 km/h</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Target Speed:</span> <span id="tt-target-speed" class="text-amber-400 font-bold">132 km/h</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Current Delay:</span> <span id="tt-delay" class="text-red-400 font-bold">4 min</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Priority:</span> <span id="tt-priority" class="text-purple-400 font-bold">HIGH (1)</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">AI Status:</span> <span id="tt-ai-status" class="text-emerald-400 font-bold">NOMINAL</span></div>
         </div>
     </div>
 

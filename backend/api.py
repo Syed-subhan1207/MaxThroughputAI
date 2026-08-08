@@ -27,6 +27,8 @@ app = FastAPI(
     description="Enterprise API Hub for Railway Network Operations Center"
 )
 
+from fastapi.staticfiles import StaticFiles
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -34,6 +36,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"]
 )
+
+# Mount frontend static files from src/
+src_path = os.path.join(_root, "src")
+if os.path.exists(src_path):
+    app.mount("/src", StaticFiles(directory=src_path, html=True), name="src")
 
 # Initialize database tables on startup
 @app.on_event("startup")
@@ -55,9 +62,15 @@ class RailwayInput(BaseModel):
     hour_of_day: int
     congestion_level: str
 
+from fastapi.responses import RedirectResponse
+from fastapi import Request
+
 # 1. HOME / HEALTH
 @app.get("/")
-def home():
+def home(request: Request):
+    accept = request.headers.get("accept", "")
+    if "text/html" in accept:
+        return RedirectResponse(url="/src/login.html")
     return {
         "status": "ONLINE",
         "system": "AI Railway Traffic Control System (MaxThroughputAI)",

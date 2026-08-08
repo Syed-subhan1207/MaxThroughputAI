@@ -1,36 +1,6 @@
-try:
-    import networkx as nx
-    HAS_NETWORKX = True
-except ImportError:
-    HAS_NETWORKX = False
-
-import matplotlib.pyplot as plt
-from utils.data_loader import DataLoader
-
-
-class SimpleGraph:
-    def __init__(self):
-        self.nodes_dict = {}
-        self.edges_dict = {}
-
-    def add_node(self, node_id, **kwargs):
-        self.nodes_dict[node_id] = kwargs
-
-    def add_edge(self, src, dst, **kwargs):
-        self.edges_dict.setdefault(src, []).append(dst)
-
-    def has_node(self, node_id):
-        return node_id in self.nodes_dict
-
-    def number_of_nodes(self):
-        return len(self.nodes_dict)
-
-    def number_of_edges(self):
-        return sum(len(v) for v in self.edges_dict.values())
-
-    def nodes(self):
-        return self.nodes_dict.keys()
-
+import math
+import heapq
+from collections import deque
 
 try:
     import networkx as nx
@@ -64,6 +34,8 @@ class SimpleGraph:
 
     def nodes(self):
         return self.nodes_dict.keys()
+
+
 
 
 def build_graph():
@@ -158,9 +130,126 @@ def find_shortest_path_details(graph, source, target):
     }
 
 
+STATION_COORDS = {
+    "S1": (120, 180),
+    "S2": (350, 160),
+    "S3": (620, 170),
+    "S4": (850, 220),
+    "S5": (780, 390),
+    "S6": (480, 440),
+    "S7": (200, 410)
+}
+
+
+def a_star_search(graph, source, target):
+    source_str = str(source).strip()
+    target_str = str(target).strip()
+
+    def heuristic(node, goal):
+        c1 = STATION_COORDS.get(node, (0, 0))
+        c2 = STATION_COORDS.get(goal, (0, 0))
+        return math.hypot(c1[0] - c2[0], c1[1] - c2[1]) / 100.0
+
+    if source_str == target_str:
+        return {"path": [source_str], "cost": 0.0, "visited_nodes": [source_str]}
+
+    pq = [(heuristic(source_str, target_str), source_str, [source_str], 0.0)]
+    visited = []
+    visited_set = set()
+
+    while pq:
+        f, current, path, g = heapq.heappop(pq)
+        if current not in visited_set:
+            visited_set.add(current)
+            visited.append(current)
+
+        if current == target_str:
+            return {
+                "path": path,
+                "cost": round(g * 12.0, 1),
+                "visited_nodes": visited
+            }
+
+        neighbors = []
+        if HAS_NETWORKX and isinstance(graph, (nx.Graph, nx.DiGraph)) and graph.has_node(current):
+            for neighbor, edge_data in graph[current].items():
+                weight = edge_data.get('weight', 1.0)
+                neighbors.append((neighbor, weight))
+        elif hasattr(graph, 'edges_dict'):
+            for neighbor in graph.edges_dict.get(current, []):
+                neighbors.append((neighbor, 1.0))
+        else:
+            nodes = list(STATION_COORDS.keys())
+            if current in nodes:
+                idx = nodes.index(current)
+                nxt = nodes[(idx + 1) % len(nodes)]
+                neighbors.append((nxt, 1.0))
+
+        for neighbor, weight in neighbors:
+            if neighbor not in visited_set:
+                new_g = g + weight
+                new_f = new_g + heuristic(neighbor, target_str)
+                heapq.heappush(pq, (new_f, neighbor, path + [neighbor], new_g))
+
+    return {
+        "path": [source_str, target_str],
+        "cost": round(heuristic(source_str, target_str) * 12.0, 1),
+        "visited_nodes": visited if visited else [source_str, target_str]
+    }
+
+
+def bfs_search(graph, source, target):
+    source_str = str(source).strip()
+    target_str = str(target).strip()
+
+    if source_str == target_str:
+        return {"connected": True, "path": [source_str], "visited_nodes": [source_str]}
+
+    queue = deque([[source_str]])
+    visited = [source_str]
+    visited_set = {source_str}
+
+    while queue:
+        path = queue.popleft()
+        node = path[-1]
+
+        if node == target_str:
+            return {
+                "connected": True,
+                "path": path,
+                "visited_nodes": visited
+            }
+
+        neighbors = []
+        if HAS_NETWORKX and isinstance(graph, (nx.Graph, nx.DiGraph)) and graph.has_node(node):
+            neighbors = list(graph.neighbors(node))
+        elif hasattr(graph, 'edges_dict'):
+            neighbors = graph.edges_dict.get(node, [])
+        else:
+            nodes = list(STATION_COORDS.keys())
+            if node in nodes:
+                idx = nodes.index(node)
+                neighbors = [nodes[(idx + 1) % len(nodes)]]
+
+        for neighbor in neighbors:
+            if neighbor not in visited_set:
+                visited_set.add(neighbor)
+                visited.append(neighbor)
+                new_path = list(path)
+                new_path.append(neighbor)
+                queue.append(new_path)
+
+    return {
+        "connected": False,
+        "path": [source_str, target_str],
+        "visited_nodes": visited
+    }
+
+
 def find_shortest_path(graph, source, target):
     details = find_shortest_path_details(graph, source, target)
     return details["path"]
+
 
 
 def draw_graph(G, edge_labels=None):
